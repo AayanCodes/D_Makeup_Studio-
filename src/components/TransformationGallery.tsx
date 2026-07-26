@@ -27,9 +27,15 @@ export const TransformationGallery: React.FC<TransformationGalleryProps> = ({ on
     activeCategory === 'all' || item.category === activeCategory
   );
 
-  const handleSliderMove = (id: string, e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+  const handleSliderMove = (id: string, e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement> | React.PointerEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    let clientX: number | undefined;
+    if ('touches' in e && e.touches && e.touches.length > 0) {
+      clientX = e.touches[0].clientX;
+    } else if ('clientX' in e) {
+      clientX = (e as React.MouseEvent<HTMLDivElement>).clientX;
+    }
+    if (clientX === undefined) return;
     const x = clientX - rect.left;
     const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
     setSliderPositions(prev => ({ ...prev, [id]: percentage }));
@@ -81,11 +87,19 @@ export const TransformationGallery: React.FC<TransformationGalleryProps> = ({ on
               >
                 {/* Interactive Slider Container */}
                 <div
-                  className="relative h-72 sm:h-96 select-none cursor-ew-resize overflow-hidden bg-[#1a1a1a]"
+                  className="relative h-72 sm:h-96 select-none cursor-ew-resize overflow-hidden bg-[#1a1a1a] touch-none"
+                  onMouseDown={(e) => handleSliderMove(item.id, e)}
                   onMouseMove={(e) => handleSliderMove(item.id, e)}
+                  onTouchStart={(e) => handleSliderMove(item.id, e)}
                   onTouchMove={(e) => handleSliderMove(item.id, e)}
+                  onPointerDown={(e) => handleSliderMove(item.id, e)}
+                  onPointerMove={(e) => {
+                    if (e.buttons === 1 || e.pointerType === 'touch') {
+                      handleSliderMove(item.id, e);
+                    }
+                  }}
                 >
-                  {/* AFTER Image (Full width background) */}
+                  {/* AFTER Image (Full width background - Vibrant Makeover) */}
                   <img
                     src={item.afterImage}
                     alt={`${item.title} After`}
@@ -96,16 +110,15 @@ export const TransformationGallery: React.FC<TransformationGalleryProps> = ({ on
                     AFTER
                   </span>
 
-                  {/* BEFORE Image (Clipped overlay) */}
+                  {/* BEFORE Image (Clipped overlay using clipPath) */}
                   <div
-                    className="absolute inset-y-0 left-0 overflow-hidden"
-                    style={{ width: `${pos}%` }}
+                    className="absolute inset-0 w-full h-full z-10 pointer-events-none"
+                    style={{ clipPath: `polygon(0 0, ${pos}% 0, ${pos}% 100%, 0 100%)` }}
                   >
                     <img
                       src={item.beforeImage}
                       alt={`${item.title} Before`}
-                      className="absolute inset-0 w-full h-full object-cover max-w-none grayscale"
-                      style={{ width: '100%', height: '100%' }}
+                      className="absolute inset-0 w-full h-full object-cover"
                       referrerPolicy="no-referrer"
                     />
                     <span className="absolute top-3 left-3 bg-neutral-900/90 text-neutral-300 text-[9px] font-bold px-2.5 py-1 z-10 uppercase tracking-[0.2em]">
@@ -115,17 +128,17 @@ export const TransformationGallery: React.FC<TransformationGalleryProps> = ({ on
 
                   {/* Divider Line */}
                   <div
-                    className="absolute inset-y-0 w-0.5 bg-amber-300 shadow-2xl z-20"
+                    className="absolute inset-y-0 w-0.5 bg-amber-300 shadow-2xl z-20 pointer-events-none"
                     style={{ left: `${pos}%` }}
                   >
-                    <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-[#1a1a1a] text-amber-300 flex items-center justify-center text-[11px] font-bold border border-amber-300">
+                    <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-[#1a1a1a] text-amber-300 flex items-center justify-center text-xs font-bold border-2 border-amber-300 shadow-lg">
                       ↔
                     </div>
                   </div>
 
                   {/* Instruction Hint */}
                   <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-[#1a1a1a]/80 text-amber-200 text-[9px] uppercase tracking-[0.15em] font-medium px-3 py-1 border border-white/10 z-10 pointer-events-none">
-                    Slide to compare
+                    Drag / Slide finger to compare
                   </div>
                 </div>
 

@@ -77,11 +77,11 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenAiAdvisor }) => 
               className="bg-[#fdfaf6] border border-[#e5e0d8] flex flex-col justify-between group hover:border-[#1a1a1a] transition-all duration-300"
             >
               {/* Image Banner */}
-              <div className="relative h-52 overflow-hidden bg-neutral-200 grayscale group-hover:grayscale-0 transition-all duration-500">
+              <div className="relative h-52 overflow-hidden bg-neutral-200">
                 <img
                   src={post.image}
                   alt={post.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-active:grayscale-0 active:grayscale-0 group-hover:scale-105 transition-all duration-500"
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute top-3 left-3 bg-[#1a1a1a] text-white text-[9px] font-bold px-2.5 py-1 uppercase tracking-[0.2em]">
@@ -145,11 +145,11 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenAiAdvisor }) => 
           <div className="bg-[#fdfaf6] border border-[#e5e0d8] max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl my-8 text-[#1a1a1a]">
             
             {/* Modal Header Image */}
-            <div className="relative h-64 sm:h-80">
+            <div className="relative h-64 sm:h-80 group">
               <img
                 src={selectedPost.image}
                 alt={selectedPost.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-active:grayscale-0 active:grayscale-0 transition-all duration-500"
                 referrerPolicy="no-referrer"
               />
               <button

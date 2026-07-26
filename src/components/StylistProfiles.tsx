@@ -32,11 +32,11 @@ export const StylistProfiles: React.FC<StylistProfilesProps> = ({ onSelectStylis
               className="bg-[#fdfaf6] border border-[#e5e0d8] flex flex-col justify-between group hover:border-[#1a1a1a] transition-all duration-300"
             >
               {/* Image Header */}
-              <div className="relative h-72 sm:h-80 overflow-hidden bg-neutral-200 grayscale group-hover:grayscale-0 transition-all duration-500">
+              <div className="relative h-72 sm:h-80 overflow-hidden bg-neutral-200">
                 <img
                   src={stylist.image}
                   alt={stylist.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-active:grayscale-0 active:grayscale-0 group-hover:scale-105 transition-all duration-500"
                   referrerPolicy="no-referrer"
                 />
                 

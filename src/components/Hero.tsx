@@ -92,11 +92,11 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onOpenAiAdvisor, onEx
           <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
             
             <div className="bg-[#faf7f2] p-4 border border-[#e5e0d8] shadow-xs">
-              <div className="relative aspect-[4/5] overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
+              <div className="relative aspect-[4/5] overflow-hidden group touch-none">
                 <img
                   src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
                   alt="D Makeup Studio Bridal Transformation"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-active:grayscale-0 active:grayscale-0 transition-all duration-500 cursor-pointer"
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute top-3 left-3 bg-[#1a1a1a] text-white px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] font-bold">
