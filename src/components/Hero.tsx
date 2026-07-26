@@ -96,7 +96,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onOpenAiAdvisor, onEx
                 <img
                   src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=800&q=80"
                   alt="D Makeup Studio Bridal Transformation"
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-active:grayscale-0 active:grayscale-0 transition-all duration-500 cursor-pointer"
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-active:grayscale-0 active:grayscale-0 transition-all duration-150 ease-out cursor-pointer"
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute top-3 left-3 bg-[#1a1a1a] text-white px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] font-bold">

@@ -110,7 +110,7 @@ export const ServiceMenu: React.FC<ServiceMenuProps> = ({ onSelectServiceToBook 
                     <img
                       src={service.image}
                       alt={service.name}
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-active:grayscale-0 active:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-active:grayscale-0 active:grayscale-0 group-hover:scale-105 transition-all duration-150 ease-out"
                       referrerPolicy="no-referrer"
                     />
                     

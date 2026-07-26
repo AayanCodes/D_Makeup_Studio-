@@ -81,7 +81,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenAiAdvisor }) => 
                 <img
                   src={post.image}
                   alt={post.title}
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-active:grayscale-0 active:grayscale-0 group-hover:scale-105 transition-all duration-500"
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-active:grayscale-0 active:grayscale-0 group-hover:scale-105 transition-all duration-150 ease-out"
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute top-3 left-3 bg-[#1a1a1a] text-white text-[9px] font-bold px-2.5 py-1 uppercase tracking-[0.2em]">
@@ -149,7 +149,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenAiAdvisor }) => 
               <img
                 src={selectedPost.image}
                 alt={selectedPost.title}
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-active:grayscale-0 active:grayscale-0 transition-all duration-500"
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-active:grayscale-0 active:grayscale-0 transition-all duration-150 ease-out"
                 referrerPolicy="no-referrer"
               />
               <button

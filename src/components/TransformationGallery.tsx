@@ -118,7 +118,7 @@ export const TransformationGallery: React.FC<TransformationGalleryProps> = ({ on
                     <img
                       src={item.beforeImage}
                       alt={`${item.title} Before`}
-                      className="absolute inset-0 w-full h-full object-cover"
+                      className="absolute inset-0 w-full h-full object-cover grayscale transition-all duration-150 ease-out"
                       referrerPolicy="no-referrer"
                     />
                     <span className="absolute top-3 left-3 bg-neutral-900/90 text-neutral-300 text-[9px] font-bold px-2.5 py-1 z-10 uppercase tracking-[0.2em]">

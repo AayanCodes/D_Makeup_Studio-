@@ -161,7 +161,7 @@ export const ContactAndMap: React.FC = () => {
                 <iframe
                   title="D Makeup Studio Location Map Bijnor"
                   src={STUDIO_INFO.googleMapsEmbedUrl}
-                  className="w-full h-full border-0 grayscale hover:grayscale-0 active:grayscale-0 transition-all duration-500"
+                  className="w-full h-full border-0 grayscale hover:grayscale-0 active:grayscale-0 transition-all duration-150 ease-out"
                   loading="lazy"
                   allowFullScreen
                 />
