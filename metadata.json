@@ -1,0 +1,6 @@
+{
+  "name": "D Makeup Studio",
+  "description": "Beauty parlour website featuring online booking with deposit payments, service menus, transformation gallery, stylist profiles, testimonials, beauty tips blog, and contact map in Bijnor.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
