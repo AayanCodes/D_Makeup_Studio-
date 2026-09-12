@@ -76,7 +76,7 @@ export interface BookingRequest {
   notes?: string;
   totalAmount: number;
   depositPaid: number;
-  paymentMethod: 'upi' | 'card' | 'netbanking';
+  paymentMethod: 'qr' | 'upi' | 'card' | 'netbanking';
   paymentTransactionId?: string;
   status: 'confirmed' | 'pending' | 'cancelled';
   createdAt?: string;

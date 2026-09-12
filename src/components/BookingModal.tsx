@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SERVICES_DATA, STYLISTS_DATA, STUDIO_INFO } from '../data/salonData';
 import { BookingRequest } from '../types';
-import { Calendar, CheckCircle, Loader2, Download, ArrowLeft, ArrowRight, Lock, ShieldCheck } from 'lucide-react';
+import { Calendar, CheckCircle, Loader2, Download, ArrowLeft, ArrowRight, Lock, ShieldCheck, QrCode, Copy, Check } from 'lucide-react';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -29,7 +29,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [notes, setNotes] = useState<string>('');
 
   // Payment state
-  const [paymentMethod, setPaymentMethod] = useState<'upi' | 'card' | 'netbanking'>('upi');
+  const [paymentMethod, setPaymentMethod] = useState<'qr' | 'upi' | 'card' | 'netbanking'>('qr');
+  const [copiedUpi, setCopiedUpi] = useState<boolean>(false);
   const [upiApp, setUpiApp] = useState<string>('gpay');
   const [upiId, setUpiId] = useState<string>('');
   const [cardNumber, setCardNumber] = useState<string>('');
@@ -413,44 +414,122 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               {/* Payment Method Selector */}
               <div>
                 <label className="block text-[10px] uppercase tracking-[0.15em] font-bold text-neutral-700 mb-2">Select Payment Option *</label>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMethod('qr')}
+                    className={`py-2.5 px-2 border text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
+                      paymentMethod === 'qr'
+                        ? 'bg-[#1a1a1a] text-white border-[#1a1a1a] shadow-xs'
+                        : 'bg-[#faf7f2] text-neutral-700 border-[#e5e0d8] hover:border-neutral-400'
+                    }`}
+                  >
+                    <QrCode className="w-4 h-4 text-amber-400" />
+                    <span>Scan QR Code</span>
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => setPaymentMethod('upi')}
-                    className={`py-2.5 px-3 border text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                    className={`py-2.5 px-2 border text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
                       paymentMethod === 'upi'
-                        ? 'bg-[#1a1a1a] text-white border-[#1a1a1a]'
-                        : 'bg-[#faf7f2] text-neutral-700 border-[#e5e0d8]'
+                        ? 'bg-[#1a1a1a] text-white border-[#1a1a1a] shadow-xs'
+                        : 'bg-[#faf7f2] text-neutral-700 border-[#e5e0d8] hover:border-neutral-400'
                     }`}
                   >
-                    <span>📱 UPI (GPay/PhonePe)</span>
+                    <span>📱 UPI ID</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setPaymentMethod('card')}
-                    className={`py-2.5 px-3 border text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                    className={`py-2.5 px-2 border text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
                       paymentMethod === 'card'
-                        ? 'bg-[#1a1a1a] text-white border-[#1a1a1a]'
-                        : 'bg-[#faf7f2] text-neutral-700 border-[#e5e0d8]'
+                        ? 'bg-[#1a1a1a] text-white border-[#1a1a1a] shadow-xs'
+                        : 'bg-[#faf7f2] text-neutral-700 border-[#e5e0d8] hover:border-neutral-400'
                     }`}
                   >
-                    <span>💳 Debit / Credit Card</span>
+                    <span>💳 Card</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setPaymentMethod('netbanking')}
-                    className={`py-2.5 px-3 border text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex flex-col items-center gap-1 ${
+                    className={`py-2.5 px-2 border text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
                       paymentMethod === 'netbanking'
-                        ? 'bg-[#1a1a1a] text-white border-[#1a1a1a]'
-                        : 'bg-[#faf7f2] text-neutral-700 border-[#e5e0d8]'
+                        ? 'bg-[#1a1a1a] text-white border-[#1a1a1a] shadow-xs'
+                        : 'bg-[#faf7f2] text-neutral-700 border-[#e5e0d8] hover:border-neutral-400'
                     }`}
                   >
                     <span>🏦 NetBanking</span>
                   </button>
                 </div>
               </div>
+
+              {/* QR Code Scan Form */}
+              {paymentMethod === 'qr' && (
+                <div className="p-4 bg-[#faf7f2] border border-[#e5e0d8] space-y-4 text-center">
+                  <div className="flex flex-col items-center justify-center space-y-2">
+                    <div className="relative p-3 bg-white border-2 border-amber-300/80 rounded-xl shadow-md inline-block">
+                      <img
+                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
+                          `upi://pay?pa=dmakeupstudio@upi&pn=D%20Makeup%20Studio%20Bijnor&am=${totalDeposit}&cu=INR&tn=Deposit%20for%20Booking`
+                        )}&margin=8`}
+                        alt="D Makeup Studio Official UPI QR Code"
+                        className="w-44 h-44 object-contain rounded"
+                      />
+                      <div className="absolute inset-x-0 bottom-1 flex justify-center">
+                        <span className="bg-[#1a1a1a] text-amber-300 text-[8px] uppercase tracking-widest font-bold px-2.5 py-0.5 rounded shadow-xs">
+                          Instant Scan & Pay
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-0.5">
+                      <p className="font-bold text-[#1a1a1a] text-xs uppercase tracking-wider">
+                        D MAKEUP STUDIO & ACADEMY
+                      </p>
+                      <p className="text-[11px] font-medium text-neutral-600">
+                        Deposit Amount Due: <strong className="text-amber-700 font-serif text-sm">₹{totalDeposit.toLocaleString('en-IN')}</strong>
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Copyable UPI VPA section */}
+                  <div className="bg-white p-2.5 border border-[#e5e0d8] flex items-center justify-between text-xs max-w-sm mx-auto">
+                    <div className="text-left">
+                      <span className="text-[9px] uppercase tracking-widest text-neutral-400 font-bold block">Salon UPI ID</span>
+                      <span className="font-mono font-bold text-[#1a1a1a] text-xs">dmakeupstudio@upi</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText('dmakeupstudio@upi');
+                        setCopiedUpi(true);
+                        setTimeout(() => setCopiedUpi(false), 2000);
+                      }}
+                      className="px-2.5 py-1.5 bg-[#1a1a1a] text-white text-[10px] font-bold uppercase tracking-wider hover:bg-neutral-800 transition-colors cursor-pointer flex items-center gap-1"
+                    >
+                      {copiedUpi ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                      <span>{copiedUpi ? 'Copied!' : 'Copy ID'}</span>
+                    </button>
+                  </div>
+
+                  {/* Direct UPI mobile launch button */}
+                  <div className="pt-1 flex flex-col items-center gap-1.5">
+                    <a
+                      href={`upi://pay?pa=dmakeupstudio@upi&pn=D%20Makeup%20Studio%20Bijnor&am=${totalDeposit}&cu=INR&tn=Deposit%20for%20Booking`}
+                      className="w-full max-w-sm py-2 bg-amber-400 text-[#1a1a1a] font-bold text-[10px] uppercase tracking-widest hover:bg-amber-300 transition-colors flex items-center justify-center gap-1.5 rounded-xs border border-amber-500 shadow-2xs"
+                    >
+                      <QrCode className="w-3.5 h-3.5" />
+                      <span>Tap to Open UPI App on Phone</span>
+                    </a>
+                    <p className="text-[10px] text-neutral-500 italic">
+                      Scan with Google Pay, PhonePe, Paytm, BHIM, or any UPI App
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {/* UPI Form */}
               {paymentMethod === 'upi' && (
